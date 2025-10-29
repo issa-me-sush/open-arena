@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "OpenServ Arena",
   description: "OpenServ Agent Arena",
+icons: {
+    icon: "/openservlogolight.svg",
+  },
 };
 
 export default function RootLayout({
