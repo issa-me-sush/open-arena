@@ -3,6 +3,14 @@ import * as React from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 
+function formatUsd(n: number) {
+  return n.toLocaleString(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 2 });
+}
+
+function formatQty(n: number) {
+  return n.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 0 });
+}
+
 type Snapshot = {
   id: string;
   date: string;
@@ -141,7 +149,17 @@ function LivePositionsCard({ model }: { model: any }) {
                   {Number(p.percentPnl ?? ((p.currentValue - p.initialValue) / Math.max(p.initialValue, 1e-8) * 100)).toFixed(2)}%
                 </span>
               </div>
-              <div className="mt-1 text-[11px] text-muted-foreground">Size {p.size ?? p.totalBought} @ {Number(p.avgPrice).toFixed(2)}</div>
+              {(() => {
+                const size = Number(p.size ?? p.totalBought ?? 0);
+                const price = Number(p.avgPrice ?? p.curPrice ?? 0);
+                const rawSide = (p.side || p.outcome || p.outcomeName || p.direction || "").toString();
+                const side = rawSide ? String(rawSide).toLowerCase() : "";
+                return (
+                  <div className="mt-1 text-[11px] text-muted-foreground">
+                    {formatQty(size)}{side ? ` ${side}` : ""} at ${price.toFixed(2)}
+                  </div>
+                );
+              })()}
             </li>
           ))}
         </ul>
@@ -178,7 +196,17 @@ function ClosedPositionsCard({ model }: { model: any }) {
                   {p.realizedPnl >= 0 ? "+" : ""}{p.realizedPnl.toFixed(2)} PnL
                 </span>
               </div>
-              <div className="mt-1 text-[11px] text-muted-foreground">Bought {p.totalBought} @ {Number(p.avgPrice).toFixed(2)}</div>
+              {(() => {
+                const size = Number(p.totalBought ?? p.size ?? 0);
+                const price = Number(p.avgPrice ?? 0);
+                const rawSide = (p.side || p.outcome || p.outcomeName || p.direction || "").toString();
+                const side = rawSide ? String(rawSide).toLowerCase() : "";
+                return (
+                  <div className="mt-1 text-[11px] text-muted-foreground">
+                    {formatQty(size)}{side ? ` ${side}` : ""} at ${price.toFixed(2)}
+                  </div>
+                );
+              })()}
             </li>
           ))}
         </ul>

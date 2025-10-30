@@ -150,7 +150,7 @@ export default async function ModelDetailPage({ params }: Props) {
             </CardContent>
           </Card>
 
-          <Card>
+          {/* <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 24h P&L
@@ -168,7 +168,7 @@ export default async function ModelDetailPage({ params }: Props) {
                 )}
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           <Card>
             <CardHeader className="pb-2">
